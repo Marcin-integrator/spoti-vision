@@ -12,12 +12,13 @@ import SearchForm from './SearchForm';
 import Header from './Header';
 import Loader from './Loader';
 import Profile from './Profile';
+import { Container } from '@material-ui/core';
 
 const Dashboard = props => {
   console.log(props);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('albums');
-  const { isValidSession, history } = props;
+  const { isValidSession, history, location } = props;
 
   const handleSearch = searchTerm => {
     if (isValidSession()) {
@@ -31,6 +32,7 @@ const Dashboard = props => {
         pathname: '/',
         state: {
           session_expired: true,
+          whereTo: location.pathname,
         },
       });
     }
@@ -58,6 +60,7 @@ const Dashboard = props => {
         pathname: '/',
         state: {
           session_expired: true,
+          whereTo: location.pathname,
         },
       });
     }
@@ -72,30 +75,33 @@ const Dashboard = props => {
 
   return (
     <React.Fragment>
-      {isValidSession() ? (
-        <div>
-          <Header />
-          <SearchForm handleSearch={handleSearch} />
-          <Profile />
-          <Loader show={isLoading}>Loading...</Loader>
-          <SearchResult
-            result={result}
-            loadMore={loadMore}
-            setCategory={setCategory}
-            selectedCategory={selectedCategory}
-            isValidSession={isValidSession}
+      <Container maxWidth={'xl'}>
+        {isValidSession() ? (
+          <div>
+            <Header />
+            <SearchForm handleSearch={handleSearch} />
+            <Profile />
+            <Loader show={isLoading}>Loading...</Loader>
+            <SearchResult
+              result={result}
+              loadMore={loadMore}
+              setCategory={setCategory}
+              selectedCategory={selectedCategory}
+              isValidSession={isValidSession}
+            />
+          </div>
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/',
+              state: {
+                session_expired: true,
+                whereTo: location.pathname,
+              },
+            }}
           />
-        </div>
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/',
-            state: {
-              session_expired: true,
-            },
-          }}
-        />
-      )}
+        )}
+      </Container>
     </React.Fragment>
   );
 };

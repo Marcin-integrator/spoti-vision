@@ -37,40 +37,38 @@ class AppRouter extends React.Component {
   render() {
     return (
       <BrowserRouter>
-        <Container fixed>
-          <Switch>
-            <Route
-              path="/"
-              exact={true}
-              render={props => (
-                <Home isValidSession={this.isValidSession} {...props} />
-              )}
-            />
-            <Route
-              path="/redirect"
-              render={props => (
-                <RedirectPage
-                  isValidSession={this.isValidSession}
-                  setExpiryTime={this.setExpiryTime}
-                  {...props}
-                />
-              )}
-            />
-            <Route
-              path="/dashboard"
-              render={props => (
-                <Dashboard isValidSession={this.isValidSession} {...props} />
-              )}
-            />
-            <Route
-              path="/visualizer"
-              render={props => (
-                <Visualizer isValidSession={this.isValidSession} {...props} />
-              )}
-            />
-            <Route component={NotFoundPage} />
-          </Switch>
-        </Container>
+        <Switch>
+          <Route
+            path="/"
+            exact={true}
+            render={props => (
+              <Home isValidSession={this.isValidSession} {...props} />
+            )}
+          />
+          <Route
+            path="/redirect"
+            render={props => (
+              <RedirectPage
+                isValidSession={this.isValidSession}
+                setExpiryTime={this.setExpiryTime}
+                {...props}
+              />
+            )}
+          />
+          <Route
+            path="/dashboard"
+            render={props => (
+              <Dashboard isValidSession={this.isValidSession} {...props} />
+            )}
+          />
+          <Route
+            path="/visualizer"
+            render={props => (
+              <Visualizer isValidSession={this.isValidSession} {...props} />
+            )}
+          />
+          <Route component={NotFoundPage} />
+        </Switch>
       </BrowserRouter>
     );
   }

@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import _ from 'lodash';
 import music from '../images/music-icon.jpg';
+import { put } from '../utils/api';
 
 const AlbumsList = ({ albums }) => {
   return (
@@ -19,10 +20,13 @@ const AlbumsList = ({ albums }) => {
               return (
                 <React.Fragment key={index}>
                   <Grid item xs={12} sm={6} md={4}>
-                    <Card style={{ width: '18rem' }}>
+                    <Card
+                      style={{ width: '18rem' }}
+                      onClick={() => put(album.uri)}
+                    >
                       <a
                         target="_blank"
-                        href={album.external_urls.spotify}
+                        //href={album.external_urls.spotify}
                         rel="noopener noreferrer"
                         className="card-image-link"
                       >

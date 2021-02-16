@@ -6,10 +6,12 @@ import {
   SET_PLAYLIST,
   ADD_PLAYLIST,
   GET_USER,
-  GET_USERS_TOP,
+  GET_USERS_TOP_ARTISTS,
+  GET_USERS_TOP_TRACKS,
   GET_CURR,
+  GET_COVER,
 } from '../utils/constants';
-import { get } from '../utils/api';
+import { get, image_get } from '../utils/api';
 
 export const setAlbums = albums => ({
   type: SET_ALBUMS,
@@ -46,14 +48,28 @@ export const getUser = user => ({
   user,
 });
 
-export const getUsersTop = user => ({
-  type: GET_USERS_TOP,
-  user,
-});
+export const getUsersTop = top => {
+  if (top[0]?.artists) {
+    return {
+      type: GET_USERS_TOP_TRACKS,
+      top,
+    };
+  } else {
+    return {
+      type: GET_USERS_TOP_ARTISTS,
+      top,
+    };
+  }
+};
 
 export const getCurr = track => ({
   type: GET_CURR,
   track,
+});
+
+export const getCover = cover => ({
+  type: GET_COVER,
+  cover,
 });
 
 export const initiateGetResult = searchTerm => {
@@ -121,10 +137,10 @@ export const initiateGetUser = () => {
 export const initiateGetUsersTop = type => {
   return async dispatch => {
     try {
-      const API_URL = `https://api.spotify.com/v1/me/top/${type}`;
+      const API_URL = `https://api.spotify.com/v1/me/top/${type}?time_range=long_term&limit=5`;
       const result = await get(API_URL);
-      console.log(result);
-      return dispatch(getUsersTop(result));
+      console.log(result.items);
+      return dispatch(getUsersTop(result.items));
     } catch (error) {
       console.log('error', error);
     }
@@ -137,7 +153,30 @@ export const initiateGetCurrTrack = () => {
       const API_URL = `https://api.spotify.com/v1/me/player/currently-playing`;
       const result = await get(API_URL);
       console.log(result);
+      result.timer = result.item.duration_ms - result.progress_ms;
       return dispatch(getCurr(result));
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+};
+
+export const getCoverImage = imageUrl => {
+  const { REACT_APP_IMAGGA_KEY, REACT_APP_IMAGGA_SECRET } = process.env;
+  return async dispatch => {
+    try {
+      const API_URL = `https://api.imagga.com/v2/colors?image_url=${encodeURIComponent(
+        imageUrl
+      )}`;
+
+      const body = {
+        username: REACT_APP_IMAGGA_KEY,
+        password: REACT_APP_IMAGGA_SECRET,
+      };
+
+      const result = await image_get(API_URL, body);
+      console.log(result);
+      return dispatch(getCover(result));
     } catch (error) {
       console.log('error', error);
     }

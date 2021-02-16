@@ -14,6 +14,12 @@ body {
   font-size: 20px;
   letter-spacing: 1px;
   color: #778298;
+  height: 100vh;
+  width: 100vw;
+}
+
+h1 {
+  text-align: center;
 }
 
 .btn {
@@ -168,9 +174,17 @@ body {
 }
 
 .cover {
+  position: relative;
   display: block;
   margin-left: auto;
   margin-right: auto;
+}
+
+.vision-board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  left: 0;
 }
 
 .back {
@@ -178,8 +192,35 @@ body {
   top: 50%;
 }
 
-#exit-v {
+.spotify {
+  max-height: 50px;
   position: absolute;
+  top: 25px;
+  left: 25px;
+}
+
+#exit-v {
+  color: black;
+  position: absolute;
+  font-size: 50px;
   top: 16px;
   right: 16px;
+}
+
+.v-background {
+  z-index: 2;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.backy {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: -10;
 }

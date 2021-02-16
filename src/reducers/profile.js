@@ -1,15 +1,23 @@
-import { GET_USER, GET_USERS_TOP } from '../utils/constants';
+import {
+  GET_USER,
+  GET_USERS_TOP_ARTISTS,
+  GET_USERS_TOP_TRACKS,
+} from '../utils/constants';
 
 const profileReducer = (state = {}, action) => {
-  const { user } = action;
-
+  const { user, top } = action;
   switch (action.type) {
     case GET_USER:
       return user;
-    case GET_USERS_TOP:
+    case GET_USERS_TOP_ARTISTS:
       return {
         ...state,
-        items: [...state.items, ...user.items],
+        artists: [...top],
+      };
+    case GET_USERS_TOP_TRACKS:
+      return {
+        ...state,
+        tracks: [...top],
       };
     default:
       return state;
