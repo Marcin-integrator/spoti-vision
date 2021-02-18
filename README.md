@@ -17,13 +17,13 @@ The image recognition API shoud analize the cover and adjust the colours.
 
 ### Main dependencies, libraries, frameworks
 
--Redux(kinda must-have)
-\_Lodash(highly useful)
--Material-UI(just to try it)
--Final-Form
--Axios
+-Redux(kinda must-have)  
+\_Lodash(highly useful)  
+-Material-UI(just to try it)  
+-Final-Form  
+-Axios  
 
 ### APIs:
 
--Spotify Web API
--Imagga API
+-Spotify Web API  
+-Imagga API  
