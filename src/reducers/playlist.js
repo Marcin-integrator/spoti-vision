@@ -5,7 +5,7 @@ const playlistReducer = (state = {}, action) => {
 
   switch (action.type) {
     case SET_PLAYLIST:
-      return { ...state, playlists };
+      return playlists;
     case ADD_PLAYLIST:
       return {
         ...state,

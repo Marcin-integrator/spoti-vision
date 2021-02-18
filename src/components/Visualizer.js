@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { initiateGetCurrTrack } from '../actions/result';
+import { getCoverImage, initiateGetCurrTrack } from '../actions/result';
 import { Redirect } from 'react-router-dom';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 import { Link } from 'react-router-dom';
@@ -9,17 +9,28 @@ import _ from 'lodash';
 
 const Visualizer = props => {
   const { dispatch, isValidSession, history, location, player } = props;
-  console.log(props);
+  const [albumCover, setAlbumCover] = useState('');
+
+  // should somehow adjust
   const diagonal = Math.sqrt(
     window.innerWidth * window.innerWidth +
       window.innerHeight * window.innerHeight
   );
-  // if (_.isEmpty(player)) {
-  //   dispatch(initiateGetCurrTrack());
-  // } else {
+
   useEffect(() => {
-    props.dispatch(initiateGetCurrTrack());
-  }, []);
+    const getThoseColours = () => {
+      props.dispatch(getCoverImage(albumCover));
+    };
+    if (albumCover) {
+      getThoseColours();
+    }
+  }, [albumCover]);
+
+  useEffect(() => {
+    if (!_.isEmpty(player)) {
+      setAlbumCover(player.item.album.images[0].url);
+    }
+  }, [player]);
 
   if (isValidSession()) {
     const currTrack = () => {
@@ -39,9 +50,7 @@ const Visualizer = props => {
   const backColors = player?.cover
     ? player.cover.result.colors.image_colors
     : ['white', 'orange', 'lightBlue'];
-  // const backColors = ['white', 'orange', 'lightBlue'];
 
-  console.log(backColors);
   const first = backColors[0];
   const second = backColors[1];
   const third = backColors[2];
@@ -49,8 +58,8 @@ const Visualizer = props => {
   const background = {
     // background:
     //   'radial-gradient(transparent 50%, white), radial-gradient(yellow, transparent 70%)',
-    // background: `repeating-conic-gradient(from 0deg, ${first.closest_palette_color_html_code} 0deg 10deg, ${second.closest_palette_color_html_code} 10deg 20deg, ${third.closest_palette_color_html_code} 20deg 30deg)`,
-    background: `repeating-conic-gradient(from 0deg, ${first} 0deg 10deg, ${second} 10deg 20deg, ${third} 20deg 30deg)`,
+    background: `repeating-conic-gradient(from 0deg, ${first.closest_palette_color_html_code} 0deg 10deg, ${second.closest_palette_color_html_code} 10deg 20deg, ${third.closest_palette_color_html_code} 20deg 30deg)`,
+    // background: `repeating-conic-gradient(from 0deg, ${first} 0deg 10deg, ${second} 10deg 20deg, ${third} 20deg 30deg)`,
     animation: 'rotate 80s linear infinite',
     width: `${diagonal}px`,
     height: `${diagonal}px`,

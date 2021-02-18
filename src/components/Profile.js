@@ -16,7 +16,6 @@ import {
   initiateGetUser,
   initiateGetUsersTop,
   initiateGetCurrTrack,
-  getCoverImage,
 } from '../actions/result';
 import { connect } from 'react-redux';
 import Current from './Current';
@@ -27,21 +26,15 @@ const Profile = props => {
   const classes = useStyles();
   // const theme = useTheme();
   const { user, player } = props;
-  console.log(player);
-  console.log(user);
 
   if (!_.isEmpty(player)) {
-    console.log('wat');
-    const albumCover = player.item.album.images[0];
     const currTrack = () => {
       props.dispatch(initiateGetCurrTrack());
-      // props.dispatch(getCoverImage(albumCover.url));
     };
     setTimeout(currTrack, player.timer);
   }
 
   useEffect(() => {
-    console.log('ref');
     props.dispatch(initiateGetUser());
     props.dispatch(initiateGetCurrTrack());
     props.dispatch(initiateGetUsersTop('artists'));
@@ -50,7 +43,6 @@ const Profile = props => {
 
   if (!_.isEmpty(user)) {
     const media = user.images[0];
-    console.log(media.url);
 
     return (
       <Card className={classes.root}>
