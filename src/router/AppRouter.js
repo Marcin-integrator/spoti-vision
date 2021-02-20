@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Home from '../components/Home';
-import RedirectPage from '../components/RedirectPage';
+
 import Dashboard from '../components/Dashboard';
+import Home from '../components/Home';
 import NotFoundPage from '../components/NotFoundPage';
-import { Container } from '@material-ui/core';
+import RedirectPage from '../components/RedirectPage';
 import Visualizer from '../components/Visualizer';
 
 class AppRouter extends React.Component {

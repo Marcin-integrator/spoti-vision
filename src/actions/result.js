@@ -1,3 +1,4 @@
+import { get, image_get } from '../utils/api';
 import {
   SET_ALBUMS,
   ADD_ALBUMS,
@@ -11,7 +12,6 @@ import {
   GET_CURR,
   GET_COVER,
 } from '../utils/constants';
-import { get, image_get } from '../utils/api';
 
 export const setAlbums = albums => ({
   type: SET_ALBUMS,
@@ -139,7 +139,6 @@ export const initiateGetUsersTop = type => {
     try {
       const API_URL = `https://api.spotify.com/v1/me/top/${type}?time_range=long_term&limit=5`;
       const result = await get(API_URL);
-      console.log(result.items);
       return dispatch(getUsersTop(result.items));
     } catch (error) {
       console.log('error', error);
@@ -152,7 +151,6 @@ export const initiateGetCurrTrack = () => {
     try {
       const API_URL = `https://api.spotify.com/v1/me/player/currently-playing`;
       const result = await get(API_URL);
-      console.log(result);
       result.timer = result.item.duration_ms - result.progress_ms;
       return dispatch(getCurr(result));
     } catch (error) {
@@ -175,7 +173,6 @@ export const getCoverImage = imageUrl => {
       };
 
       const result = await image_get(API_URL, body);
-      console.log(result);
       return dispatch(getCover(result));
     } catch (error) {
       console.log('error', error);

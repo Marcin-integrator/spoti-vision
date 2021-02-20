@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
   Card,
@@ -9,18 +10,17 @@ import {
   Typography,
   List,
   ListItem,
-  ListItemAvatar,
-  ListItemText,
 } from '@material-ui/core';
+// import { useTheme } from '@material-ui/core/styles';
+
 import {
   initiateGetUser,
   initiateGetUsersTop,
   initiateGetCurrTrack,
 } from '../actions/result';
-import { connect } from 'react-redux';
-import Current from './Current';
-// import { useTheme } from '@material-ui/core/styles';
 import { useStyles } from '../utils/styles';
+import Current from './Current';
+import Tops from './Tops';
 
 const Profile = props => {
   const classes = useStyles();
@@ -77,68 +77,10 @@ const Profile = props => {
           )}
         </CardContent>
         <CardContent>
-          {!_.isEmpty(user.artists) && (
-            <div className="profile">
-              <Typography variant="h5" component="h3">
-                My top artists:
-              </Typography>
-              <List>
-                {user.artists.map((artist, index) => {
-                  return (
-                    <ListItem key={artist.id}>
-                      <Typography
-                        className={classes.numbers}
-                        variant="body1"
-                        component="p"
-                      >
-                        {index + 1}
-                      </Typography>
-
-                      <ListItemAvatar>
-                        <Avatar src={artist.images[2].url} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={artist.name}
-                        secondary={`Followers: ${artist.followers.total}`}
-                      />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </div>
-          )}
+          {!_.isEmpty(user.artists) && <Tops tops={user.artists} />}
         </CardContent>
         <CardContent>
-          {!_.isEmpty(user.tracks) && (
-            <div className="profile">
-              <Typography variant="h5" component="h3">
-                My top tracks:
-              </Typography>
-              <List>
-                {user.tracks.map((track, index) => {
-                  return (
-                    <ListItem key={track.id}>
-                      <Typography
-                        className={classes.numbers}
-                        variant="body1"
-                        component="p"
-                      >
-                        {index + 1}
-                      </Typography>
-
-                      <ListItemAvatar>
-                        <Avatar src={track.album.images[2].url} />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={track.name}
-                        secondary={track.artists[0].name}
-                      />
-                    </ListItem>
-                  );
-                })}
-              </List>
-            </div>
-          )}
+          {!_.isEmpty(user.tracks) && <Tops tops={user.tracks} />}
         </CardContent>
       </Card>
     );

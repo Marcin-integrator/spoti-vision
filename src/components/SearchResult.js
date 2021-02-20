@@ -1,10 +1,11 @@
 import React from 'react';
-import _ from 'lodash';
-import ArtistsList from './ArtistsList';
-import AlbumsList from './AlbumsList';
-import PlayList from './PlayList';
 import { Redirect } from 'react-router-dom';
+import _ from 'lodash';
 import { Button } from '@material-ui/core';
+
+import AlbumsList from './AlbumsList';
+import ArtistsList from './ArtistsList';
+import PlayList from './PlayList';
 
 const SearchResult = props => {
   const {
@@ -34,9 +35,11 @@ const SearchResult = props => {
       <div className="search-buttons">
         {!_.isEmpty(albums.items) && (
           <Button
-            className={`${
-              selectedCategory === 'albums' ? 'btm active' : 'btn'
+            variant={`${
+              selectedCategory === 'albums' ? 'contained' : 'outlined'
             }`}
+            className="btn"
+            color="primary"
             onClick={() => setCategory('albums')}
           >
             Albums
@@ -44,9 +47,11 @@ const SearchResult = props => {
         )}
         {!_.isEmpty(artists.items) && (
           <Button
-            className={`${
-              selectedCategory === 'artists' ? 'btm active' : 'btn'
+            variant={`${
+              selectedCategory === 'artists' ? 'contained' : 'outlined'
             }`}
+            className="btn"
+            color="primary"
             onClick={() => setCategory('artists')}
           >
             Artists
@@ -54,9 +59,11 @@ const SearchResult = props => {
         )}
         {!_.isEmpty(playlist.items) && (
           <Button
-            className={`${
-              selectedCategory === 'playlist' ? 'btm active' : 'btn'
+            variant={`${
+              selectedCategory === 'playlist' ? 'contained' : 'outlined'
             }`}
+            className="btn"
+            color="primary"
             onClick={() => setCategory('playlist')}
           >
             Playlists
@@ -75,7 +82,7 @@ const SearchResult = props => {
       {!_.isEmpty(result[selectedCategory]) &&
         !_.isEmpty(result[selectedCategory].next) && (
           <div className="load-more" onClick={() => loadMore(selectedCategory)}>
-            <Button variant="text" type="button">
+            <Button variant="outlined" color="primary">
               Load More
             </Button>
           </div>

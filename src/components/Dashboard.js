@@ -1,24 +1,24 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { Container } from '@material-ui/core';
+
+import Header from './Header';
+import Loader from './Loader';
+import Profile from './Profile';
+import SearchForm from './SearchForm';
+import SearchResult from './SearchResult';
 import {
   initiateGetResult,
   initiateLoadMoreAlbums,
   initiateLoadMoreArtists,
   initiateLoadMorePlaylist,
 } from '../actions/result';
-import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import SearchResult from './SearchResult';
-import SearchForm from './SearchForm';
-import Header from './Header';
-import Loader from './Loader';
-import Profile from './Profile';
-import { Container } from '@material-ui/core';
 
 const Dashboard = props => {
-  console.log(props);
+  const { isValidSession, history, location } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('albums');
-  const { isValidSession, history, location } = props;
 
   const handleSearch = searchTerm => {
     if (isValidSession()) {

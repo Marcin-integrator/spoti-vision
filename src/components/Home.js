@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
+
 import Header from './Header';
-import { Redirect } from 'react-router-dom';
 
 const Home = props => {
   const {
@@ -13,7 +14,7 @@ const Home = props => {
   } = process.env;
 
   const handleLogin = () => {
-    window.location = `${REACT_APP_AUTHORIZE_URL}?client_id=${REACT_APP_CLIENT_ID}&redirect_uri=${REACT_APP_REDIRECT_URL}&scope=user-read-private%20user-read-currently-playing%20user-top-read%20user-modify-playback-state&response_type=token&show_dialog=true`;
+    window.location = `${REACT_APP_AUTHORIZE_URL}?client_id=${REACT_APP_CLIENT_ID}&redirect_uri=${REACT_APP_REDIRECT_URL}&scope=user-read-private%20user-read-currently-playing%20user-top-read%20user-read-playback-state%20user-modify-playback-state&response_type=token&show_dialog=true`;
   };
 
   const { isValidSession, location } = props;

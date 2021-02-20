@@ -24,6 +24,7 @@ h1 {
 
 .btn {
   letter-spacing: 1px;
+  color: greenyellow;
 }
 
 .login {
@@ -54,10 +55,6 @@ h1 {
   display: none;
 }
 
-.active {
-  border: 2px solid #566273;
-}
-
 .loading {
   display: flex;
   justify-content: center;
@@ -74,12 +71,9 @@ h1 {
 }
 
 .load-more button {
-  border: none;
-  color: #fff;
   border-radius: 10px;
   padding: 10px;
   letter-spacing: 1px;
-  outline: none;
 }
 
 #loader {
@@ -101,7 +95,7 @@ h1 {
   font-size: 150%;
   top: 50%;
   left: 50%;
-  transform: translateX(-10%);
+  transform: translateX(-5%);
   color: #fff;
   letter-spacing: 1px;
 }
@@ -129,7 +123,6 @@ h1 {
   font-size: 1.2rem;
   letter-spacing: 1px;
   font-weight: bold;
-  color: #778298;
 }
 
 .search-buttons .btn:focus {
@@ -194,9 +187,19 @@ h1 {
 
 .spotify {
   max-height: 50px;
-  position: absolute;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
   top: 25px;
   left: 25px;
+}
+
+@media only screen and (min-width: 1000px) {
+  .spotify {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+  }
 }
 
 #exit-v {
@@ -226,7 +229,7 @@ h1 {
 }
 
 form {
-  position: relative;
+  /* position: relative; */
 }
 
 .search-input {
@@ -240,15 +243,15 @@ form {
   font: inherit;
   color: currentColor;
   width: max-content;
-  max-width: fit-content;
+  /* max-width: fit-content; */
   border: 0;
   height: 1.1876em;
-  margin: 0;
+  margin: 0 5px 0 0;
   display: flex;
   flex: 1;
   padding: 6px 0 7px;
   /* min-width: 0; */
-  background: none;
+  background: white;
   box-sizing: content-box;
   animation-name: mui-auto-fill-cancel;
   letter-spacing: inherit;
@@ -295,6 +298,35 @@ form {
 #form {
   display: flex;
   flex-direction: row;
-  align-content: stretch;
-  justify-content: space-between;
+  /* align-content: stretch; */
+  /* justify-content: space-between; */
+}
+
+.search-item {
+  position: relative;
+}
+
+.search-item .play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  opacity: 0;
+  transition: all 0.8s ease;
+  font-size: 100px;
+}
+
+.search-item:hover .play-icon {
+  opacity: 1;
+}
+
+.search-item:hover .search-image {
+  opacity: 0.5;
+  cursor: pointer;
+}
+
+.list::after {
+  content: '';
+  flex: auto;
 }
