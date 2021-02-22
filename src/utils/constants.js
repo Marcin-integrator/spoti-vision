@@ -9,3 +9,4 @@ export const GET_USERS_TOP_ARTISTS = 'GET_USERS_TOP_ARTISTS';
 export const GET_USERS_TOP_TRACKS = 'GET_USERS_TOP_TRACKS';
 export const GET_CURR = 'GET_CURR';
 export const GET_COVER = 'GET_COVER';
+export const GET_AUDIO_DETAILS = 'GET_AUDIO_DETAILS';

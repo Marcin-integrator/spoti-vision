@@ -6,28 +6,19 @@ export const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     maxWidth: 'max-content',
     margin: 'auto',
+    justifyContent: 'center',
   },
   details: {
     display: 'flex',
     flexDirection: 'column',
-
     justifyContent: 'center',
   },
-  content: {
-    flex: '1 0 auto',
-  },
-  cover: {
-    width: 151,
-  },
-  controls: {
+  halfProfile: {
     display: 'flex',
-    alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
-  },
-  playIcon: {
-    height: 38,
-    width: 38,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    flexBasis: 'content',
   },
   large: {
     width: theme.spacing(13),

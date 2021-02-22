@@ -22,46 +22,104 @@ h1 {
   text-align: center;
 }
 
+.albums,
+.artists,
+.playlist {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.back {
+  margin: auto;
+  top: 50%;
+}
+
+.backy {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: -10;
+}
+
 .btn {
   letter-spacing: 1px;
   color: greenyellow;
 }
 
-.login {
+.card {
+  margin: 1rem;
+  box-shadow: 0 2px 7px 3px #949ca5;
+}
+
+.card .card-image-link {
+  padding: 1rem;
+  text-align: center;
+}
+
+.card-image-link > img {
+  width: 100%;
+}
+
+.cover {
+  position: relative;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#empty-player {
+  width: 300px;
+  height: 300px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: darkgrey;
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
-.login .btn {
-  font-size: 1.2rem;
+.errorMsg {
+  color: #f21e08;
+  background: #fff0f0;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.main {
-  width: 90%;
-  margin: 2rem auto;
+#exit-v {
+  color: black;
+  position: absolute;
+  font-size: 50px;
+  top: 16px;
+  right: 16px;
+}
+
+#form {
+  display: flex;
+  flex-direction: row;
 }
 
 .form-control {
   font-size: 1.2rem;
 }
 
-.main-heading {
-  margin: 2rem 0;
+.half-profile {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-basis: content;
 }
 
 .hide {
   display: none;
 }
 
-.loading {
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  letter-spacing: 1px;
-  margin-top: 10%;
-  font-size: 150%;
+.list::after {
+  content: '';
+  flex: auto;
 }
 
 .load-more {
@@ -90,6 +148,39 @@ h1 {
   );
 }
 
+.loader-open {
+  overflow: hidden;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  letter-spacing: 1px;
+  margin-top: 10%;
+  font-size: 150%;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login .btn {
+  font-size: 1.2rem;
+}
+
+.main {
+  width: 90%;
+  margin: 2rem auto;
+}
+
+.main-heading {
+  margin: 2rem 0;
+}
+
 .message {
   position: relative;
   font-size: 150%;
@@ -98,17 +189,6 @@ h1 {
   transform: translateX(-5%);
   color: #fff;
   letter-spacing: 1px;
-}
-
-.loader-open {
-  overflow: hidden;
-}
-
-.errorMsg {
-  color: #f21e08;
-  background: #fff0f0;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
 }
 
 .search-buttons {
@@ -129,128 +209,31 @@ h1 {
   box-shadow: none;
 }
 
-.albums,
-.artists,
-.playlist {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.card {
-  margin: 1rem;
-  box-shadow: 0 2px 7px 3px #949ca5;
-}
-
-.card .card-image-link {
-  padding: 1rem;
-  text-align: center;
-}
-
-.card-image-link > img {
-  width: 100%;
-}
-
 @media screen and (max-width: 400px) {
-  .search-buttons {
-    flex-direction: column;
-  }
-  .search-buttons .btn {
-    margin: 0.6rem;
-  }
   .card img {
     height: auto;
   }
   .main-heading {
     text-align: center;
   }
-}
-
-.cover {
-  position: relative;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.vision-board {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  left: 0;
-}
-
-.back {
-  margin: auto;
-  top: 50%;
-}
-
-.spotify {
-  max-height: 50px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  top: 25px;
-  left: 25px;
-}
-
-@media only screen and (min-width: 1000px) {
-  .spotify {
-    position: absolute;
-    top: 25px;
-    left: 25px;
+  .search-buttons {
+    flex-direction: column;
   }
-}
-
-#exit-v {
-  color: black;
-  position: absolute;
-  font-size: 50px;
-  top: 16px;
-  right: 16px;
-}
-
-.v-background {
-  z-index: 2;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
+  .search-buttons .btn {
+    margin: 0.6rem;
   }
-}
-
-.backy {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  z-index: -10;
-}
-
-form {
-  /* position: relative; */
 }
 
 .search-input {
-  /* flex: 1;
-  padding: 3px 5px;
-  font-size: 1em;
-  margin-left: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px; */
-
   font: inherit;
   color: currentColor;
   width: max-content;
-  /* max-width: fit-content; */
   border: 0;
   height: 1.1876em;
   margin: 0 5px 0 0;
   display: flex;
   flex: 1;
   padding: 6px 0 7px;
-  /* min-width: 0; */
   background: white;
   box-sizing: content-box;
   animation-name: mui-auto-fill-cancel;
@@ -295,13 +278,6 @@ form {
   letter-spacing: 0.00938em;
 }
 
-#form {
-  display: flex;
-  flex-direction: row;
-  /* align-content: stretch; */
-  /* justify-content: space-between; */
-}
-
 .search-item {
   position: relative;
 }
@@ -326,7 +302,36 @@ form {
   cursor: pointer;
 }
 
-.list::after {
-  content: '';
-  flex: auto;
+.spotify {
+  max-height: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  top: 25px;
+  left: 25px;
+}
+
+@media only screen and (min-width: 1100px) {
+  .spotify {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+  }
+}
+
+.v-background {
+  z-index: 2;
+}
+
+.vision-board {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  left: 0;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
 }

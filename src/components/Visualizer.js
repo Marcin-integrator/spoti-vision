@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { getCoverImage, initiateGetCurrTrack } from '../actions/result';
-import { Redirect } from 'react-router-dom';
-import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
-import { Link } from 'react-router-dom';
-import spotify_icon from '../images/Spotify_Icon_RGB_Black.png';
 import _ from 'lodash';
+import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
+
+import {
+  getCoverImage,
+  initiateGetAudioDetails,
+  initiateGetCurrTrack,
+} from '../actions/result';
+import spotify_icon from '../images/Spotify_Icon_RGB_Black.png';
 
 const Visualizer = props => {
   const { dispatch, isValidSession, history, location, player } = props;
+
   const [albumCover, setAlbumCover] = useState('');
+  const [trackId, setTrackId] = useState('');
 
   // should somehow adjust
   const diagonal = Math.sqrt(
@@ -19,7 +25,7 @@ const Visualizer = props => {
 
   useEffect(() => {
     const getThoseColours = () => {
-      props.dispatch(getCoverImage(albumCover));
+      dispatch(getCoverImage(albumCover));
     };
     if (albumCover) {
       getThoseColours();
@@ -29,12 +35,15 @@ const Visualizer = props => {
   useEffect(() => {
     if (!_.isEmpty(player)) {
       setAlbumCover(player.item.album.images[0].url);
+      dispatch(initiateGetAudioDetails(trackId));
     }
-  }, [player]);
+  }, [trackId]);
 
   if (isValidSession()) {
-    const currTrack = () => {
-      dispatch(initiateGetCurrTrack());
+    const currTrack = async () => {
+      const result = await dispatch(initiateGetCurrTrack());
+      const { id } = result.track.item;
+      setTrackId(id);
     };
     setTimeout(currTrack, player.timer);
   } else {
@@ -49,18 +58,24 @@ const Visualizer = props => {
 
   const backColors = player?.cover
     ? player.cover.result.colors.image_colors
-    : ['white', 'orange', 'lightBlue'];
+    : ['black', 'black', 'black'];
 
   const first = backColors[0];
   const second = backColors[1];
   const third = backColors[2];
 
+  const tempo = player?.audio ? player.audio.tempo : 120;
+  const speed = (60 * 36 * 4) / tempo;
+
   const background = {
-    // background:
-    //   'radial-gradient(transparent 50%, white), radial-gradient(yellow, transparent 70%)',
-    background: `repeating-conic-gradient(from 0deg, ${first.closest_palette_color_html_code} 0deg 10deg, ${second.closest_palette_color_html_code} 10deg 20deg, ${third.closest_palette_color_html_code} 20deg 30deg)`,
-    // background: `repeating-conic-gradient(from 0deg, ${first} 0deg 10deg, ${second} 10deg 20deg, ${third} 20deg 30deg)`,
-    animation: 'rotate 80s linear infinite',
+    background: `repeating-conic-gradient(from 0deg, ${
+      player?.cover ? first.closest_palette_color_html_code : first
+    } 0deg 10deg, ${
+      player?.cover ? second.closest_palette_color_html_code : second
+    } 10deg 20deg, ${
+      player?.cover ? third.closest_palette_color_html_code : third
+    } 20deg 30deg)`,
+    animation: `rotate ${speed}s linear infinite`,
     width: `${diagonal}px`,
     height: `${diagonal}px`,
     borderRadius: '100%',

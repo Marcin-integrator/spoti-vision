@@ -11,6 +11,7 @@ import {
   GET_USERS_TOP_TRACKS,
   GET_CURR,
   GET_COVER,
+  GET_AUDIO_DETAILS,
 } from '../utils/constants';
 
 export const setAlbums = albums => ({
@@ -70,6 +71,11 @@ export const getCurr = track => ({
 export const getCover = cover => ({
   type: GET_COVER,
   cover,
+});
+
+export const getAudioDeails = audio => ({
+  type: GET_AUDIO_DETAILS,
+  audio,
 });
 
 export const initiateGetResult = searchTerm => {
@@ -153,6 +159,18 @@ export const initiateGetCurrTrack = () => {
       const result = await get(API_URL);
       result.timer = result.item.duration_ms - result.progress_ms;
       return dispatch(getCurr(result));
+    } catch (error) {
+      console.log('error', error);
+    }
+  };
+};
+
+export const initiateGetAudioDetails = id => {
+  return async dispatch => {
+    try {
+      const API_URL = `https://api.spotify.com/v1/audio-features/${id}`;
+      const result = await get(API_URL);
+      return dispatch(getAudioDeails(result));
     } catch (error) {
       console.log('error', error);
     }
