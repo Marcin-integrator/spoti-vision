@@ -16,12 +16,37 @@ const Visualizer = props => {
 
   const [albumCover, setAlbumCover] = useState('');
   const [trackId, setTrackId] = useState('');
+  const [tempo, setTempo] = useState(120);
 
   // should somehow adjust
   const diagonal = Math.sqrt(
     window.innerWidth * window.innerWidth +
       window.innerHeight * window.innerHeight
   );
+
+  useEffect(() => {
+    if (isValidSession()) {
+      const currTrack = async () => {
+        const result = await dispatch(initiateGetCurrTrack());
+        const { id } = result.track.item;
+        setTrackId(id);
+      };
+
+      if (!trackId) {
+        currTrack();
+      } else {
+        setTimeout(currTrack, player.timer);
+      }
+    } else {
+      history.push({
+        pathname: '/',
+        state: {
+          session_expired: true,
+          whereTo: location.pathname,
+        },
+      });
+    }
+  }, [trackId]);
 
   useEffect(() => {
     const getThoseColours = () => {
@@ -33,56 +58,50 @@ const Visualizer = props => {
   }, [albumCover]);
 
   useEffect(() => {
-    if (!_.isEmpty(player)) {
+    if (!_.isEmpty(player) && isValidSession()) {
       setAlbumCover(player.item.album.images[0].url);
       dispatch(initiateGetAudioDetails(trackId));
+    } else {
+      history.push({
+        pathname: '/',
+        state: {
+          session_expired: true,
+          whereTo: location.pathname,
+        },
+      });
     }
   }, [trackId]);
 
-  if (isValidSession()) {
-    const currTrack = async () => {
-      const result = await dispatch(initiateGetCurrTrack());
-      const { id } = result.track.item;
-      setTrackId(id);
-    };
-    setTimeout(currTrack, player.timer);
-  } else {
-    history.push({
-      pathname: '/',
-      state: {
-        session_expired: true,
-        whereTo: location.pathname,
-      },
-    });
-  }
-
-  const backColors = player?.cover
-    ? player.cover.result.colors.image_colors
-    : ['black', 'black', 'black'];
-
-  const first = backColors[0];
-  const second = backColors[1];
-  const third = backColors[2];
-
-  const tempo = player?.audio ? player.audio.tempo : 120;
-  const speed = (60 * 36 * 4) / tempo;
-
-  const background = {
-    background: `repeating-conic-gradient(from 0deg, ${
-      player?.cover ? first.closest_palette_color_html_code : first
-    } 0deg 10deg, ${
-      player?.cover ? second.closest_palette_color_html_code : second
-    } 10deg 20deg, ${
-      player?.cover ? third.closest_palette_color_html_code : third
-    } 20deg 30deg)`,
-    animation: `rotate ${speed}s linear infinite`,
-    width: `${diagonal}px`,
-    height: `${diagonal}px`,
-    borderRadius: '100%',
-    left: `-${(diagonal - window.innerWidth) / 2}px`,
-  };
+  useEffect(() => {
+    setTempo(player?.audio ? player.audio.tempo : 120);
+  }, [player.audio]);
 
   if (!_.isEmpty(player)) {
+    const backColors = player?.cover
+      ? player.cover.result.colors.image_colors
+      : ['gray', 'black', 'darkred'];
+
+    const first = backColors[0];
+    const second = backColors[1];
+    const third = backColors[2];
+
+    const speed = (60 * 36 * 4) / tempo;
+
+    const background = {
+      background: `repeating-conic-gradient(from 0deg, ${
+        player?.cover ? first.closest_palette_color_html_code : first
+      } 0deg 10deg, ${
+        player?.cover ? second.closest_palette_color_html_code : second
+      } 10deg 20deg, ${
+        player?.cover ? third.closest_palette_color_html_code : third
+      } 20deg 30deg)`,
+      animation: `rotate ${speed}s linear infinite`,
+      width: `${diagonal}px`,
+      height: `${diagonal}px`,
+      borderRadius: '100%',
+      left: `-${(diagonal - window.innerWidth) / 2}px`,
+    };
+
     const cover = player.item.album.images[0];
     const height = cover.height;
 

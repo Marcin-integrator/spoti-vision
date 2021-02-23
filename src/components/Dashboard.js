@@ -80,7 +80,7 @@ const Dashboard = props => {
           <div>
             <Header />
             <SearchForm handleSearch={handleSearch} />
-            <Profile />
+            <Profile {...props} />
             <Loader show={isLoading}>Loading...</Loader>
             <SearchResult
               result={result}

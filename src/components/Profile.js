@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
@@ -21,22 +21,48 @@ import Current from './Current';
 import Tops from './Tops';
 
 const Profile = props => {
+  const { dispatch, isValidSession, history, location, player, user } = props;
   const classes = useStyles();
-  const { dispatch, player, user } = props;
-
-  if (!_.isEmpty(player)) {
-    const currTrack = () => {
-      dispatch(initiateGetCurrTrack());
-    };
-    setTimeout(currTrack, player.timer);
-  }
+  const [trackId, setTrackId] = useState('');
 
   useEffect(() => {
-    dispatch(initiateGetUser());
-    dispatch(initiateGetCurrTrack());
-    dispatch(initiateGetUsersTop('artists'));
-    dispatch(initiateGetUsersTop('tracks'));
+    if (isValidSession()) {
+      dispatch(initiateGetUser());
+      dispatch(initiateGetUsersTop('artists'));
+      dispatch(initiateGetUsersTop('tracks'));
+    } else {
+      history.push({
+        pathname: '/',
+        state: {
+          session_expired: true,
+          whereTo: location.pathname,
+        },
+      });
+    }
   }, []);
+
+  useEffect(() => {
+    if (isValidSession()) {
+      const currTrack = async () => {
+        const result = await dispatch(initiateGetCurrTrack());
+        const { id } = result?.track ? result.track.item : '';
+        setTrackId(id);
+      };
+      if (!trackId) {
+        currTrack();
+      } else {
+        setTimeout(currTrack, player.timer);
+      }
+    } else {
+      history.push({
+        pathname: '/',
+        state: {
+          session_expired: true,
+          whereTo: location.pathname,
+        },
+      });
+    }
+  }, [trackId]);
 
   if (!_.isEmpty(user)) {
     const media = user.images[0];
