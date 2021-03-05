@@ -4,7 +4,10 @@ const playerReducer = (state = {}, action) => {
   const { audio, track, cover } = action;
   switch (action.type) {
     case GET_CURR:
-      return track;
+      return {
+        ...state,
+        ...track,
+      };
     case GET_AUDIO_DETAILS:
       return {
         ...state,

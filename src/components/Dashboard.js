@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
 import { Container } from '@material-ui/core';
 
 import Header from './Header';
@@ -14,33 +13,35 @@ import {
   initiateLoadMoreArtists,
   initiateLoadMorePlaylist,
 } from '../actions/result';
+import { sessionExpired } from '../utils/functions';
 
 const Dashboard = props => {
-  const { isValidSession, history, location } = props;
+  const {
+    albums,
+    artists,
+    dispatch,
+    history,
+    isValidSession,
+    location,
+    playlist,
+  } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('albums');
 
   const handleSearch = searchTerm => {
     if (isValidSession()) {
       setIsLoading(true);
-      props.dispatch(initiateGetResult(searchTerm)).then(() => {
+      dispatch(initiateGetResult(searchTerm)).then(() => {
         setIsLoading(false);
         setSelectedCategory('albums');
       });
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
   };
 
   const loadMore = async type => {
     if (isValidSession()) {
-      const { dispatch, albums, artists, playlist } = props;
       setIsLoading(true);
       switch (type) {
         case 'albums':
@@ -56,13 +57,7 @@ const Dashboard = props => {
       }
       setIsLoading(false);
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
   };
 
@@ -70,39 +65,24 @@ const Dashboard = props => {
     setSelectedCategory(category);
   };
 
-  const { albums, artists, playlist } = props;
   const result = { albums, artists, playlist };
 
   return (
-    <React.Fragment>
-      <Container maxWidth={'xl'}>
-        {isValidSession() ? (
-          <div>
-            <Header />
-            <SearchForm handleSearch={handleSearch} />
-            <Profile {...props} />
-            <Loader show={isLoading}>Loading...</Loader>
-            <SearchResult
-              result={result}
-              loadMore={loadMore}
-              setCategory={setCategory}
-              selectedCategory={selectedCategory}
-              isValidSession={isValidSession}
-            />
-          </div>
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/',
-              state: {
-                session_expired: true,
-                whereTo: location.pathname,
-              },
-            }}
-          />
-        )}
+    <>
+      <Container maxWidth="xl">
+        <Header />
+        <SearchForm handleSearch={handleSearch} />
+        <Profile {...props} />
+        <Loader show={isLoading}>Loading...</Loader>
+        <SearchResult
+          result={result}
+          loadMore={loadMore}
+          setCategory={setCategory}
+          selectedCategory={selectedCategory}
+          isValidSession={isValidSession}
+        />
       </Container>
-    </React.Fragment>
+    </>
   );
 };
 

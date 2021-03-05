@@ -1,16 +1,18 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import _ from 'lodash';
 import { Button } from '@material-ui/core';
 
 import AlbumsList from './AlbumsList';
 import ArtistsList from './ArtistsList';
 import PlayList from './PlayList';
+import { sessionExpired } from '../utils/functions';
 
 const SearchResult = props => {
   const {
+    history,
     isValidSession,
     loadMore,
+    location,
     result,
     setCategory,
     selectedCategory,
@@ -18,20 +20,11 @@ const SearchResult = props => {
   const { albums, artists, playlist } = result;
 
   if (!isValidSession()) {
-    return (
-      <Redirect
-        to={{
-          pathname: '/',
-          state: {
-            session_expired: true,
-          },
-        }}
-      />
-    );
+    return sessionExpired(history, location.pathname);
   }
 
   return (
-    <React.Fragment>
+    <>
       <div className="search-buttons">
         {!_.isEmpty(albums.items) && (
           <Button
@@ -87,7 +80,7 @@ const SearchResult = props => {
             </Button>
           </div>
         )}
-    </React.Fragment>
+    </>
   );
 };
 

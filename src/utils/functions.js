@@ -23,3 +23,13 @@ export const setAuthHeader = () => {
     console.log('Error setting auth', error);
   }
 };
+
+export const sessionExpired = (history, pathname) => {
+  history.push({
+    pathname: '/',
+    state: {
+      session_expired: true,
+      whereTo: pathname,
+    },
+  });
+};

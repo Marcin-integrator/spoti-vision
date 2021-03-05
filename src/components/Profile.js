@@ -16,6 +16,7 @@ import {
   initiateGetUser,
   initiateGetUsersTop,
 } from '../actions/result';
+import { sessionExpired } from '../utils/functions';
 import { useStyles } from '../utils/styles';
 import Current from './Current';
 import Tops from './Tops';
@@ -31,15 +32,9 @@ const Profile = props => {
       dispatch(initiateGetUsersTop('artists'));
       dispatch(initiateGetUsersTop('tracks'));
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
-  }, []);
+  }, [dispatch, isValidSession, history, location]);
 
   useEffect(() => {
     if (isValidSession()) {
@@ -54,15 +49,9 @@ const Profile = props => {
         setTimeout(currTrack, player.timer);
       }
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
-  }, [trackId]);
+  }, [dispatch, isValidSession, history, location, player, trackId]);
 
   if (!_.isEmpty(user)) {
     const media = user.images[0];

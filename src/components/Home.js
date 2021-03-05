@@ -22,7 +22,7 @@ const Home = props => {
   const sessionExpired = state && state.session_expired;
 
   return (
-    <React.Fragment>
+    <>
       {isValidSession() ? (
         <Redirect to={state?.whereTo ? state.whereTo : '/dashboard'} />
       ) : (
@@ -36,7 +36,7 @@ const Home = props => {
           </Button>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

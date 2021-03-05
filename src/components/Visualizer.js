@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { Chip } from '@material-ui/core';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
 import {
@@ -10,13 +11,33 @@ import {
   initiateGetCurrTrack,
 } from '../actions/result';
 import spotify_icon from '../images/Spotify_Icon_RGB_Black.png';
+import { sessionExpired } from '../utils/functions';
 
 const Visualizer = props => {
   const { dispatch, isValidSession, history, location, player } = props;
-
   const [albumCover, setAlbumCover] = useState('');
   const [trackId, setTrackId] = useState('');
   const [tempo, setTempo] = useState(120);
+  const [opaSwitch, setOpaSwitch] = useState(1);
+
+  const vBack = {
+    zIndex: 2,
+    // visibility: 'hidden',
+    opacity: opaSwitch,
+    transition: 'visibility 0s 1s, opacity 1s linear',
+  };
+
+  const showItems = () => {
+    setOpaSwitch(1);
+    setTimeout(() => {
+      setOpaSwitch(0);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    window.addEventListener('mousemove', showItems);
+    showItems();
+  }, []);
 
   // should somehow adjust
   const diagonal = Math.sqrt(
@@ -28,25 +49,19 @@ const Visualizer = props => {
     if (isValidSession()) {
       const currTrack = async () => {
         const result = await dispatch(initiateGetCurrTrack());
-        const { id } = result.track.item;
+        const { id } = result?.track ? result.track.item : '';
         setTrackId(id);
       };
-
       if (!trackId) {
         currTrack();
       } else {
+        setAlbumCover(player.item.album.images[0].url);
         setTimeout(currTrack, player.timer);
       }
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
-  }, [trackId]);
+  }, [dispatch, isValidSession, history, location, player, trackId]);
 
   useEffect(() => {
     const getThoseColours = () => {
@@ -55,28 +70,21 @@ const Visualizer = props => {
     if (albumCover) {
       getThoseColours();
     }
-  }, [albumCover]);
+  }, [albumCover, dispatch]);
 
   useEffect(() => {
-    if (!_.isEmpty(player) && isValidSession()) {
-      setAlbumCover(player.item.album.images[0].url);
+    if (isValidSession()) {
       dispatch(initiateGetAudioDetails(trackId));
     } else {
-      history.push({
-        pathname: '/',
-        state: {
-          session_expired: true,
-          whereTo: location.pathname,
-        },
-      });
+      sessionExpired(history, location.pathname);
     }
-  }, [trackId]);
+  }, [dispatch, isValidSession, history, location, trackId]);
 
   useEffect(() => {
     setTempo(player?.audio ? player.audio.tempo : 120);
   }, [player.audio]);
 
-  if (!_.isEmpty(player)) {
+  if (!_.isEmpty(player.item)) {
     const backColors = player?.cover
       ? player.cover.result.colors.image_colors
       : ['gray', 'black', 'darkred'];
@@ -106,41 +114,41 @@ const Visualizer = props => {
     const height = cover.height;
 
     return (
-      <React.Fragment>
-        {isValidSession() ? (
-          <div>
-            <div className="back">
-              <img
-                className="spotify v-background"
-                src={spotify_icon}
-                alt="Spotify"
+      <>
+        <div>
+          <div className="back">
+            <img
+              style={vBack}
+              className="spotify v-background"
+              src={spotify_icon}
+              alt="Spotify"
+            />
+            <Link to="/dashboard">
+              <ExitToAppRoundedIcon
+                className="v-background"
+                id="exit-v"
+                style={vBack}
               />
-              <Link to="/dashboard">
-                <ExitToAppRoundedIcon className="v-background" id="exit-v" />
-              </Link>
-              {!_.isEmpty(player) && (
+            </Link>
+            {!_.isEmpty(player) && (
+              <>
                 <img
                   className="cover"
                   style={{ marginTop: `calc(50vh - ${height / 2}px)` }}
                   alt={player.item.name}
                   src={cover.url}
                 />
-              )}
-            </div>
-            <div className="backy" style={background}></div>
+                <Chip
+                  style={vBack}
+                  id="cover-label"
+                  label={`${player.item.artists[0].name} - ${player.item.name}`}
+                />
+              </>
+            )}
           </div>
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/',
-              state: {
-                session_expired: true,
-                whereTo: location.pathname,
-              },
-            }}
-          />
-        )}
-      </React.Fragment>
+          <div className="backy" style={background}></div>
+        </div>
+      </>
     );
   }
   return null;

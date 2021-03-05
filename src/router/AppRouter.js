@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Dashboard from '../components/Dashboard';
@@ -6,72 +6,59 @@ import Home from '../components/Home';
 import NotFoundPage from '../components/NotFoundPage';
 import RedirectPage from '../components/RedirectPage';
 import Visualizer from '../components/Visualizer';
+import RedirectRoute from './RedirectRoute';
 
-class AppRouter extends React.Component {
-  state = {
-    expiryTime: '0',
-  };
+const AppRouter = () => {
+  const [expiryTime, setExpiryTime] = useState('0');
 
-  componentDidMount() {
-    let expiryTime;
+  useEffect(() => {
+    let time;
     try {
-      expiryTime = JSON.parse(localStorage.getItem('expiry_time'));
+      time = JSON.parse(localStorage.getItem('expiry_time'));
     } catch (error) {
-      expiryTime = '0';
+      time = '0';
     }
-    this.setState({ expiryTime });
-  }
+    setExpiryTime(time);
+  }, []);
 
-  setExpiryTime = expiryTime => {
-    this.setState({ expiryTime });
+  const setTime = timeUpdate => {
+    setExpiryTime(timeUpdate);
   };
 
-  isValidSession = () => {
+  const isValidSession = () => {
     const currentTime = new Date().getTime();
-    const expiryTime = this.state.expiryTime;
     const isSessionValid = currentTime < expiryTime;
-
     return isSessionValid;
   };
 
-  render() {
-    return (
-      <BrowserRouter>
-        <Switch>
-          <Route
-            path="/"
-            exact={true}
-            render={props => (
-              <Home isValidSession={this.isValidSession} {...props} />
-            )}
-          />
-          <Route
-            path="/redirect"
-            render={props => (
-              <RedirectPage
-                isValidSession={this.isValidSession}
-                setExpiryTime={this.setExpiryTime}
-                {...props}
-              />
-            )}
-          />
-          <Route
-            path="/dashboard"
-            render={props => (
-              <Dashboard isValidSession={this.isValidSession} {...props} />
-            )}
-          />
-          <Route
-            path="/visualizer"
-            render={props => (
-              <Visualizer isValidSession={this.isValidSession} {...props} />
-            )}
-          />
-          <Route component={NotFoundPage} />
-        </Switch>
-      </BrowserRouter>
-    );
-  }
-}
+  return (
+    <BrowserRouter>
+      <Switch>
+        <Route
+          path="/"
+          exact
+          render={props => <Home isValidSession={isValidSession} {...props} />}
+        />
+        <Route
+          path="/redirect"
+          render={props => (
+            <RedirectPage
+              isValidSession={isValidSession}
+              setTime={setTime}
+              {...props}
+            />
+          )}
+        />
+        <RedirectRoute path="/dashboard" isValidSession={isValidSession}>
+          <Dashboard isValidSession={isValidSession} />
+        </RedirectRoute>
+        <RedirectRoute path="/visualizer" isValidSession={isValidSession}>
+          <Visualizer isValidSession={isValidSession} />
+        </RedirectRoute>
+        <Route component={NotFoundPage} />
+      </Switch>
+    </BrowserRouter>
+  );
+};
 
 export default AppRouter;

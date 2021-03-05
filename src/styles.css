@@ -69,6 +69,14 @@ h1 {
   margin-right: auto;
 }
 
+#cover-label {
+  margin-top: 1em;
+  position: sticky;
+  left: 50%;
+  font-size: larger;
+  transform: translate(-50%);
+}
+
 #empty-player {
   width: 300px;
   height: 300px;

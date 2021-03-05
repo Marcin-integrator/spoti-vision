@@ -17,7 +17,7 @@ import { put } from '../utils/api';
 
 const ArtistsList = ({ artists }) => {
   return (
-    <React.Fragment>
+    <>
       {Object.keys(artists).length > 0 && (
         <div className="artists">
           <Grid className="list" justify="space-evenly" container spacing={4}>
@@ -68,7 +68,7 @@ const ArtistsList = ({ artists }) => {
           </Grid>
         </div>
       )}
-    </React.Fragment>
+    </>
   );
 };
 
