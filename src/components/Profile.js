@@ -94,10 +94,10 @@ const Profile = props => {
         </div>
         <div className={classes.halfProfile}>
           <CardContent>
-            {!_.isEmpty(user.artists) && <Tops tops={user.artists} />}
+            <Tops tops={user.artists} />
           </CardContent>
           <CardContent>
-            {!_.isEmpty(user.tracks) && <Tops tops={user.tracks} />}
+            <Tops tops={user.tracks} />
           </CardContent>
         </div>
       </Card>
