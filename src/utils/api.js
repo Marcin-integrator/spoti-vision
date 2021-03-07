@@ -31,7 +31,7 @@ export const put = async uri => {
 };
 
 export const image_get = async (url, auth) => {
-  const { REACT_APP_IMAGGA_BASIC } = process.env;
+  const { REACT_APP_IMAGGA_BASIC } = process.env.test;
   axios.defaults.headers.common['Authorization'] = REACT_APP_IMAGGA_BASIC;
 
   const result = await axios.get(url, auth);

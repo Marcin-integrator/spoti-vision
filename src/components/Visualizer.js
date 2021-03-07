@@ -65,7 +65,7 @@ const Visualizer = props => {
 
   useEffect(() => {
     const getThoseColours = () => {
-      dispatch(getCoverImage(albumCover));
+      // dispatch(getCoverImage(albumCover));
     };
     if (albumCover) {
       getThoseColours();

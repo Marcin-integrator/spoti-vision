@@ -178,7 +178,7 @@ export const initiateGetAudioDetails = id => {
 };
 
 export const getCoverImage = imageUrl => {
-  const { REACT_APP_IMAGGA_KEY, REACT_APP_IMAGGA_SECRET } = process.env;
+  const { REACT_APP_IMAGGA_KEY, REACT_APP_IMAGGA_SECRET } = process.env.test;
   return async dispatch => {
     try {
       const API_URL = `https://api.imagga.com/v2/colors?image_url=${encodeURIComponent(
