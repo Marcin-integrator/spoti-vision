@@ -12,14 +12,14 @@ npm install
 ```
 
 3. Add your keys to .env.test file
-
+```
    REACT_APP_CLIENT_ID=Client_ID
    REACT_APP_AUTHORIZE_URL=https://accounts.spotify.com/authorize
    REACT_APP_REDIRECT_URL=http://localhost:3000/redirect
    REACT_APP_IMAGGA_KEY=API_key
    REACT_APP_IMAGGA_SECRET=API_Secret
    REACT_APP_IMAGGA_BASIC=Authorization
-
+```
 For Client ID register at:
 https://developer.spotify.com/dashboard/
 
