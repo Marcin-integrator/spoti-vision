@@ -33,3 +33,16 @@ export const sessionExpired = (history, pathname) => {
     },
   });
 };
+
+export const progressCounter = duration => {
+  duration = duration / 1000;
+  let minutes = Math.floor(duration / 60);
+  let seconds = Math.round(duration % 60);
+  if (seconds === 60) {
+    ++minutes;
+    seconds = 0;
+  }
+  const fixedSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  const timer = `${minutes} : ${fixedSeconds}`;
+  return timer;
+};

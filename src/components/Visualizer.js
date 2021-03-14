@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { Chip } from '@material-ui/core';
 import ExitToAppRoundedIcon from '@material-ui/icons/ExitToAppRounded';
 
+import PlayerBar from './PlayerBar';
 import {
   getCoverImage,
   initiateGetAudioDetails,
@@ -65,7 +66,7 @@ const Visualizer = props => {
 
   useEffect(() => {
     const getThoseColours = () => {
-      // dispatch(getCoverImage(albumCover));
+      dispatch(getCoverImage(albumCover));
     };
     if (albumCover) {
       getThoseColours();
@@ -148,6 +149,7 @@ const Visualizer = props => {
           </div>
           <div className="backy" style={background}></div>
         </div>
+        <PlayerBar {...props} />
       </>
     );
   }

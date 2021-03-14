@@ -77,6 +77,13 @@ h1 {
   transform: translate(-50%);
 }
 
+.duration-area {
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  width: 60%;
+}
+
 #empty-player {
   width: 300px;
   height: 300px;
@@ -189,6 +196,13 @@ h1 {
   margin: 2rem 0;
 }
 
+.manage-area {
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
 .message {
   position: relative;
   font-size: 150%;
@@ -197,6 +211,34 @@ h1 {
   transform: translateX(-5%);
   color: #fff;
   letter-spacing: 1px;
+}
+
+#prev-button,
+#pause-button,
+#play-button,
+#forw-button {
+  font-size: 2.5rem;
+}
+
+.player-bar {
+  position: fixed;
+  display: grid;
+  grid-template-columns: auto 80% auto;
+  width: 100%;
+  bottom: 0;
+  background-color: black;
+}
+
+.progress-bar {
+  margin: auto;
+  background-color: #778298;
+  height: 5px;
+  width: 80%;
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
 }
 
 .search-buttons {

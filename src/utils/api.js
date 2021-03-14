@@ -46,3 +46,25 @@ export const active_player = async () => {
   console.log(result.data.devices);
   return result.data.devices;
 };
+
+export const play = async () => {
+  const devices = await active_player();
+  if (devices.length === 0) {
+    return;
+  } else {
+    const url = 'https://api.spotify.com/v1/me/player/play';
+    setAuthHeader();
+    await axios.put(url);
+  }
+};
+
+export const pause = async () => {
+  const devices = await active_player();
+  if (devices.length === 0) {
+    return;
+  } else {
+    const url = 'https://api.spotify.com/v1/me/player/pause';
+    setAuthHeader();
+    await axios.put(url);
+  }
+};

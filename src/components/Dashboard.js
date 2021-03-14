@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import { Container } from '@material-ui/core';
 
 import Header from './Header';
 import Loader from './Loader';
+import PlayerBar from './PlayerBar';
 import Profile from './Profile';
 import SearchForm from './SearchForm';
 import SearchResult from './SearchResult';
@@ -23,6 +25,7 @@ const Dashboard = props => {
     history,
     isValidSession,
     location,
+    player,
     playlist,
   } = props;
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +85,7 @@ const Dashboard = props => {
           isValidSession={isValidSession}
         />
       </Container>
+      {!_.isEmpty(player) && <PlayerBar {...props} />}
     </>
   );
 };
@@ -91,6 +95,7 @@ const mapaStateToProps = state => {
     albums: state.albums,
     artists: state.artists,
     playlist: state.playlist,
+    player: state.player,
   };
 };
 
