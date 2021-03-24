@@ -56,6 +56,8 @@ const ArtistsList = ({ artists }) => {
                           size="small"
                           color="primary"
                           href={artist.external_urls.spotify}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           Go to artist page
                         </Button>

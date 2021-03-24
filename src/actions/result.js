@@ -1,4 +1,4 @@
-import { get, image_get } from '../utils/api';
+import { active_player, get, image_get } from '../utils/api';
 import {
   SET_ALBUMS,
   ADD_ALBUMS,
@@ -153,6 +153,10 @@ export const initiateGetUsersTop = type => {
 };
 
 export const initiateGetCurrTrack = () => {
+  // const devices = active_player();
+  // if (devices.length === 0) {
+  //   return;
+  // } else {
   return async dispatch => {
     try {
       const API_URL = `https://api.spotify.com/v1/me/player/currently-playing`;
@@ -163,6 +167,7 @@ export const initiateGetCurrTrack = () => {
       console.log('error', error);
     }
   };
+  // }
 };
 
 export const initiateGetAudioDetails = id => {

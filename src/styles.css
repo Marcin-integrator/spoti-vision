@@ -69,6 +69,11 @@ h1 {
   margin-right: auto;
 }
 
+.cover-small {
+  width: 64px;
+  height: 64px;
+}
+
 #cover-label {
   margin-top: 1em;
   position: sticky;

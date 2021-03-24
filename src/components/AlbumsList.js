@@ -59,6 +59,8 @@ const AlbumsList = ({ albums }) => {
                           size="small"
                           color="primary"
                           href={album.external_urls.spotify}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           Go to album page
                         </Button>

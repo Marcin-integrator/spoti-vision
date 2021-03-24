@@ -149,7 +149,9 @@ const Visualizer = props => {
           </div>
           <div className="backy" style={background}></div>
         </div>
-        <PlayerBar {...props} />
+        <div style={vBack}>
+          <PlayerBar {...props} />
+        </div>
       </>
     );
   }

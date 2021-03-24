@@ -16,7 +16,7 @@ export const post = async (url, params) => {
 export const put = async uri => {
   const devices = await active_player();
   if (devices.length === 0) {
-    return;
+    return alert('no active devices found');
   } else {
     const url = 'https://api.spotify.com/v1/me/player/play';
     const data = {
@@ -47,24 +47,19 @@ export const active_player = async () => {
   return result.data.devices;
 };
 
-export const play = async () => {
+export const managePlayer = async action => {
   const devices = await active_player();
   if (devices.length === 0) {
     return;
   } else {
-    const url = 'https://api.spotify.com/v1/me/player/play';
+    const url = `https://api.spotify.com/v1/me/player/${action}`;
     setAuthHeader();
-    await axios.put(url);
-  }
-};
-
-export const pause = async () => {
-  const devices = await active_player();
-  if (devices.length === 0) {
-    return;
-  } else {
-    const url = 'https://api.spotify.com/v1/me/player/pause';
-    setAuthHeader();
-    await axios.put(url);
+    if (action === 'play' || action === 'pause') {
+      await axios.put(url);
+    } else {
+      const result = await axios.post(url);
+      // console.log(result);
+      return result;
+    }
   }
 };

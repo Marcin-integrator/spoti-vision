@@ -85,7 +85,9 @@ const Dashboard = props => {
           isValidSession={isValidSession}
         />
       </Container>
-      {!_.isEmpty(player) && <PlayerBar {...props} />}
+      {!_.isEmpty(player) && (
+        <PlayerBar history={history} location={location} {...props} />
+      )}
     </>
   );
 };

@@ -59,6 +59,8 @@ const PlayList = ({ playlist }) => {
                           size="small"
                           color="primary"
                           href={item.external_urls.spotify}
+                          target="_blank"
+                          rel="noopener noreferrer"
                         >
                           Go to playlist page
                         </Button>
